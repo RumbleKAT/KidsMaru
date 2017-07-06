@@ -18,7 +18,8 @@ public class PlayerControl : MonoBehaviour {
 	bool right = false;
 	bool locationCheck = true;
 	bool endCheck = false;
-	//bool savelocation = true;
+	bool MoveMent = false; 
+	bool warp = false;
 
 	private float x; //location
 	private float y; 
@@ -30,8 +31,11 @@ public class PlayerControl : MonoBehaviour {
 	private float posX = 0.0f;
 
 	private MapMaking mapData;
+	private GameSetup setup;
 	private int count;
 	public string name = "";
+	private bool goTarget = true; //if true go to the Target place otherwise go home so if true 
+
 
 
 	// Use this for initialization
@@ -42,6 +46,7 @@ public class PlayerControl : MonoBehaviour {
 
 	void Awake(){
 		mapData = Map.GetComponent<MapMaking> ();
+		setup = gamesetup.GetComponent<GameSetup> ();
 	}
 	
 	// Update is called once per frame
@@ -102,7 +107,7 @@ public class PlayerControl : MonoBehaviour {
 			} else if (Observer ((int)x, (int)posY) == 2) {
 
 				Debug.Log ("End!"); //end  
-				//endCheck = true;
+				endCheck = true;
 				            
 				action = false;
 				transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
@@ -143,6 +148,7 @@ public class PlayerControl : MonoBehaviour {
 			} else if (Observer ((int)posX, (int)y) == 2) {
 
 				Debug.Log ("End!");
+				endCheck = true;
 				action = false;
 				transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
 
@@ -175,12 +181,10 @@ public class PlayerControl : MonoBehaviour {
 			bool action = false;
 
 			if (BoundaryCheck ((int)posX, (int)y) == true) {
-				//Debug.Log ("Crash");
-				//Debug.Log (x + " " + y); 
 				transform.position = new Vector3 ((int)x, 1, (int)y);
 			} else if (Observer ((int)posX, (int)y) == 2) {
 				Debug.Log ("End!"); //end  
-				//endCheck = true;
+				endCheck = true;
 				            
 				action = false;
 				transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
@@ -216,17 +220,29 @@ public class PlayerControl : MonoBehaviour {
 
 		if (endCheck) {
 
-			if (count <= 3) {
-				mapData.TileBuilder (count,name);//with parameter sending 
-				count++;
-			}
+			Debug.Log ("Count : " + count);
 
-			//Debug.Log (count);
+			//if (goTarget) {
+				//if (count < 12) {
+					mapData.TileBuilder (name);//with parameter sending 
+					count++;
+					//Debug.Log ("Count : " + count);
+			//		goTarget = false;
+				//}
+			//}
+
 			endCheck = false;
 
 			Debug.Log (endCheck);
 
 		}
+
+		if (warp) {
+			Warp ();
+
+			warp = false;
+		}
+			
 			
 	}
 
@@ -240,23 +256,34 @@ public class PlayerControl : MonoBehaviour {
 
 		if (Observer ((int)x, (int)y) == 0) {
 			//Start Event
+			goTarget = true;
+//			Debug.Log ("Go Target : " + goTarget); 
+			//Debug.Log (goTarget);
+
+			if (MoveMent) {
+				endCheck = true;
+				MoveMent = false;
+			}
 
 		} else if (Observer ((int)x, (int)y) == 1) {
 			//Road Event
 
 		} else if (Observer ((int)x, (int)y) == 2) {
 			//End Event
-		//	transform.position = new Vector3 ((int)lastx, 1, (int)lasty); //action 
-		//	Debug.Log("lastX : " + lastx + " " + "lastY : " + lasty);
-		//	Debug.Log("End Point");
-		//	endCheck = true; checking the 
-
+	
 		} else if (Observer ((int)x, (int)y) == 3) {
 			//Obstacle Event
 			Debug.Log("Obstacle Point");
 			transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
 
 		}
+		else if (Observer ((int)x, (int)y) == 4) {
+			//Warp Event
+			Debug.Log("Warp Point");
+			warp = true; // if warp true 
+
+		}
+
 
 	
 	}
@@ -275,6 +302,8 @@ public class PlayerControl : MonoBehaviour {
 			down = false;
 			left = false;
 			right = false;
+			MoveMent = true; //just move 
+
 		}
 
 		if (Input.GetKeyDown (KeyCode.S)) {
@@ -284,6 +313,8 @@ public class PlayerControl : MonoBehaviour {
 			up = false; //moving action!
 			left = false;
 			right = false;
+			MoveMent = true;
+
 		}
 
 		if (Input.GetKeyDown (KeyCode.A)) {
@@ -293,6 +324,8 @@ public class PlayerControl : MonoBehaviour {
 			up = false; //moving action!
 			left = true;
 			right = false;
+			MoveMent = true;
+
 		}
 
 		if (Input.GetKeyDown (KeyCode.D)) {
@@ -302,6 +335,7 @@ public class PlayerControl : MonoBehaviour {
 			up = false; //moving action!
 			left = false;
 			right = true;
+			MoveMent = true;
 		}
 
 	}
@@ -322,19 +356,65 @@ public class PlayerControl : MonoBehaviour {
 
 		} else if (tileType == 3) {
 			return 3;
+		} else if (tileType == 4) {
+			return 4; 
 		} else {
-			return 4; //nothing mean
+			return 5;	//nothing mean 
 		}
 		
 	}
-		
+
+	void Warp(){
+
+		//Debug.Log ("Player :  " + (int)setup.playerLocation [0].x + " " + (int)setup.playerLocation [0].y); player
+		//Debug.Log("Player : " + mapData.tilexy[0].obstacle[0].x + " " + mapData.tilexy[0].obstacle[0].y); obstacle
+		//Debug.Log("Player : " + mapData.tilexy[0].Warp[0].x + " " + mapData.tilexy[0].Warp[0].y); warp 
+
+		int WarpX = Random.Range (0, 8);
+		int WarpY = Random.Range (0, 8);
+		int count_Warp = 0;
+			
+			for (int i = 0; i < (int)setup.playerLocation.Length; i++) {
+				if (WarpX != (int)setup.playerLocation [i].x && WarpY != (int)setup.playerLocation [i].y) {
+					count_Warp++;
+				}
+			}
+
+			if (count_Warp == 4) {
+				//no match Player location 
+
+				for (int i = 0; i < mapData.ObstacleCount; i++) {
+					if (WarpX != mapData.tilexy [0].obstacle [i].x && WarpY != mapData.tilexy [0].obstacle [i].y) {
+						count_Warp++;
+					}
+				}
+	
+			}
+				
+
+			if (count_Warp == 4 + (mapData.ObstacleCount - 1)) {
+			//no match obstacle
+				for (int i = 0; i < mapData.tilexy [0].Warp.Length; i++) {
+
+				if (WarpX != mapData.tilexy [0].Warp [i].x && WarpY != mapData.tilexy [0].Warp [i].y) {
+					count_Warp++;
+				}
+			}
+
+		}
+
+		if (count_Warp == 8 + (mapData.ObstacleCount - 1)) {
+			Debug.Log ("Determined : " + WarpX + " " + WarpY);
+			transform.position = new Vector3 (WarpX, 1, WarpY);
+		}
+
+			
+	}
 
 
 	void setLastlocation(){
 		lastx = (int)transform.position.x;
 		lasty = (int)transform.position.z;
-
-		//Debug.Log ("lastX : " + lastx + " " + "lastY : " + lasty);
 	}
 
 	bool BoundaryCheck(int a, int b){
@@ -353,3 +433,4 @@ public class PlayerControl : MonoBehaviour {
 		}
 	}
 }
+//MAKE WARP AND PLAYER 2 , 3 , 4 돌아 올 때도 랜덤
