@@ -15,10 +15,24 @@ public class MapMaking : MonoBehaviour {
 	ClickableTile ct;
 	private bool CountUp = false;
 
-	private int Player1_ObstacleCount = 1;
-	private int Player2_ObstacleCount = 1;
-	private int Player3_ObstacleCount = 1;
-	private int Player4_ObstacleCount = 1;
+//	private bool Player1_Shuffle = true; //after Game End Player's obstacle is removed and reshuffled 
+//	private bool Player2_Shuffle = true;
+//	private bool Player3_Shuffle = true;
+//	private bool Player4_Shuffle = true;
+
+
+
+	private int selection; //min value: 0 | max value: 6
+
+	private int [] Player1_ObstacleCount;
+	private int [] Player2_ObstacleCount;
+	private int [] Player3_ObstacleCount;
+	private int [] Player4_ObstacleCount;
+
+	private int P1_ObstacleCount = 0; //Player's Obstacle Count 
+	private int P2_ObstacleCount = 0;
+	private int P3_ObstacleCount = 0;
+	private int P4_ObstacleCount = 0;
 
 
 	void Start () {
@@ -26,6 +40,31 @@ public class MapMaking : MonoBehaviour {
 		ObstacleCount = 4; //total counting 
 		GenerateMapData (ObstacleCount);
 		GenerateMapVisual();
+
+		Player1_ObstacleCount = new int[7];
+
+		MakeShuffle (Player1_ObstacleCount);
+
+
+		/*
+		for (int i = 0; i < Player1_ObstacleCount.Length; i++) {
+			Player1_ObstacleCount [i] = i;
+		}
+
+		Set_Shuffle(Player1_ObstacleCount);
+
+		for (int i = 0; i < Player1_ObstacleCount.Length; i++) {
+			Debug.Log ("Shuffle : " + Player1_ObstacleCount [i]);
+		}
+		*/
+
+		//need reshuffling 
+
+		//Player2_ObstacleCount = new int[7];
+		//Player3_ObstacleCount = new int[7];
+		//Player4_ObstacleCount = new int[7];
+
+
 	}
 
 	void GenerateMapData(int size){
@@ -61,6 +100,7 @@ public class MapMaking : MonoBehaviour {
 	}
 
 	void Update(){
+
 		if (CountUp) {
 			ObstacleCount = ObstacleCount + 1;
 			Debug.Log ("Obstacle : " + ObstacleCount);
@@ -75,13 +115,13 @@ public class MapMaking : MonoBehaviour {
 
 	void loadObstacle(){
 		tilexy = GameObject.Find("GameObject").GetComponents<tileXY>();
+
 	}
 
 	public int getTileData(int x,int y){
-		int data = (int)tiles[x,y];
-
+       	int data = (int)tiles[x,y];
 		return data; //GetTile
-	}
+	}            
 
 
 
@@ -107,42 +147,103 @@ public class MapMaking : MonoBehaviour {
 				Destroy(Tiles[i]);
 			}
 	}
+		
+
+
 
 	public void TileBuilder(string name){
 		//remake Tile with this method
-
-		Debug.Log (ObstacleCount);
+		//Debug.Log (ObstacleCount);
 
 		if (name == "First") {
-			 
-			//each player can make obstacle 8. 
 
-			int selection = Random.Range (0, 7); //min value: 0 | max value: 6
-			//exception 
+			Debug.Log ("P1_ObstacleCount : " + P1_ObstacleCount);
+		
+			if (P1_ObstacleCount >= 7) {
+				Debug.Log ("End!");
+
+				ObstacleCount = ObstacleCount - 8;
+				P1_ObstacleCount = 0;
+
+				Debug.Log (ObstacleCount);
+
+				//reset P1_Obstacle
+				for (int i = 0; i < tilexy[0].obstacle.Length ; i++) {
+					for (int j = 0; j < tilexy [0].Player1Obstacle.Length; j++) {
+
+						if (tilexy [0].obstacle [i].x == tilexy [0].Player1Obstacle [j].x && tilexy [0].obstacle [i].y == tilexy [0].Player1Obstacle [j].y) {
+							Debug.Log ("Delete Previous Data");
+							tilexy [0].obstacle [i].x = 10;
+							tilexy [0].obstacle [i].y = 10;
 
 
-			Debug.Log ("X location : " + tilexy[0].Player1Obstacle[selection].x + " | " + "Y location : " + tilexy[0].Player1Obstacle[selection].y  );
+						}
+					}
+				}
 
-			if (tilexy [0].Player1Obstacle [selection].x == 10 && tilexy [0].Player1Obstacle [selection].y == 10) {
-
-				selection = Random.Range (0, 7); //Player's location compare needed
-
-				Debug.Log (selection);
-
-			} else {
-				tilexy [0].obstacle [ObstacleCount].x = tilexy [0].Player1Obstacle [selection].x;
-				tilexy [0].obstacle [ObstacleCount].y = tilexy [0].Player1Obstacle [selection].y;
-
-				tilexy [0].Player1Obstacle [selection].x = 10;
-				tilexy [0].Player1Obstacle [selection].y = 10;
-
+				MakeShuffle (Player1_ObstacleCount);
 
 				CountUp = true;
-			
+
+
+			} else {
+
+				//Debug.Log ("Obstacle Count : " +  P1_ObstacleCount);
+				//Debug.Log ("X : " + tilexy [0].Player1Obstacle [P1_ObstacleCount].x + " Y : " + tilexy [0].Player1Obstacle [P1_ObstacleCount].y);
+
+				tilexy [0].obstacle [ObstacleCount].x = tilexy [0].Player1Obstacle [Player1_ObstacleCount [P1_ObstacleCount]].x;
+				tilexy [0].obstacle [ObstacleCount].y = tilexy [0].Player1Obstacle [Player1_ObstacleCount [P1_ObstacleCount]].y;
+
+
+				P1_ObstacleCount++; //P1's Obstacle Count increase 
+				CountUp = true;
 			}
 
-		}
+
+
+		} else if (name == "Second") {
+
+				if ( P2_ObstacleCount >= 7) {
+					Debug.Log ("End!");
+
+				} else {
+
+					//Debug.Log ("Obstacle Count : " +  P1_ObstacleCount);
+					//Debug.Log ("X : " + tilexy [0].Player1Obstacle [P1_ObstacleCount].x + " Y : " + tilexy [0].Player1Obstacle [P1_ObstacleCount].y);
+
+					tilexy [0].obstacle [ObstacleCount].x = tilexy [0].Player2Obstacle [Player2_ObstacleCount[P2_ObstacleCount]].x;
+					tilexy [0].obstacle [ObstacleCount].y = tilexy [0].Player2Obstacle [Player2_ObstacleCount[P2_ObstacleCount]].y;
+
+
+					P2_ObstacleCount++; //P1's Obstacle Count increase 
+					CountUp = true;
+				}
+
+		} 
 			
+	}
+
+	public void Set_Shuffle(int [] arr){
+		for (int t = 0; t < arr.Length; t++) {
+			int tmp = arr [t];
+			int r = Random.Range (t, arr.Length);
+			arr [t] = arr [r];
+			arr [r] = tmp;
+		}
+	}
+
+	void MakeShuffle(int [] arr){
+	
+		for (int i = 0; i < arr.Length; i++) {
+			arr [i] = i;
+		}
+
+		Set_Shuffle(arr);
+
+		for (int i = 0; i < arr.Length; i++) {
+			Debug.Log ("Shuffle : " + arr [i]);
+		}
+	
 	}
 
 

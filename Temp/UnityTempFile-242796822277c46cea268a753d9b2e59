@@ -88,6 +88,7 @@
 'Assets/Scripts/PlayerControl.cs'
 'Assets/Scripts/TileEvent.cs'
 'Assets/Scripts/TileType.cs'
+'Assets/Scripts/shuffle.cs'
 'Assets/Scripts/tileXY.cs'
 -r:'/Applications/Unity/Unity.app/Contents/Mono/lib/mono/unity/System.Runtime.Serialization.dll'
 -r:'/Applications/Unity/Unity.app/Contents/Mono/lib/mono/unity/System.Xml.Linq.dll'

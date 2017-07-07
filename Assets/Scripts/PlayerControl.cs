@@ -32,7 +32,6 @@ public class PlayerControl : MonoBehaviour {
 
 	private MapMaking mapData;
 	private GameSetup setup;
-	private int count;
 	public string name = "";
 	private bool goTarget = true; //if true go to the Target place otherwise go home so if true 
 
@@ -40,7 +39,6 @@ public class PlayerControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		count = 1;
 		//name = "First"; //setting name of mouse
 	}
 
@@ -220,16 +218,11 @@ public class PlayerControl : MonoBehaviour {
 
 		if (endCheck) {
 
-			Debug.Log ("Count : " + count);
 
-			//if (goTarget) {
-				//if (count < 12) {
+			if (goTarget) {
 					mapData.TileBuilder (name);//with parameter sending 
-					count++;
-					//Debug.Log ("Count : " + count);
-			//		goTarget = false;
-				//}
-			//}
+					goTarget = false;
+			}
 
 			endCheck = false;
 
@@ -257,8 +250,7 @@ public class PlayerControl : MonoBehaviour {
 		if (Observer ((int)x, (int)y) == 0) {
 			//Start Event
 			goTarget = true;
-//			Debug.Log ("Go Target : " + goTarget); 
-			//Debug.Log (goTarget);
+
 
 			if (MoveMent) {
 				endCheck = true;
