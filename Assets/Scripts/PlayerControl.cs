@@ -18,7 +18,7 @@ public class PlayerControl : MonoBehaviour {
 	bool right = false;
 	bool locationCheck = true;
 	bool endCheck = false;
-	bool MoveMent = false; 
+	bool goHome = false; 
 	bool warp = false;
 
 	private float x; //location
@@ -63,13 +63,18 @@ public class PlayerControl : MonoBehaviour {
 				up = false; // play once 
 
 			} else if (Observer ((int)x, (int)posY) == 2) {
-				Debug.Log ("End!"); //end  
-				endCheck = true;
-			
 				action = false;
 				transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
 				locationCheck = true;
 				up = false; // play once 
+
+				goHome = true;
+
+				if (goTarget) {
+					endCheck = true;
+					goTarget = false;
+				}
+
 
 			} else {
 				action = true;
@@ -110,8 +115,16 @@ public class PlayerControl : MonoBehaviour {
 				action = false;
 				transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
 				locationCheck = true;
-				down = false; // play once 
-			
+				down = false; // play once
+
+				goHome = true;
+
+				if (goTarget) {
+					endCheck = true;
+					goTarget = false;
+				}
+
+
 			} else {
 				action = true;
 			}
@@ -152,6 +165,13 @@ public class PlayerControl : MonoBehaviour {
 
 				locationCheck = true;
 				left = false; // play once 
+
+				goHome = true;
+
+				if (goTarget) {
+					endCheck = true;
+					goTarget = false;
+				}
 	
 			} else {
 				action = true;
@@ -189,6 +209,14 @@ public class PlayerControl : MonoBehaviour {
 				locationCheck = true;
 				right = false; // play once 
 
+
+				goHome = true;
+
+				if (goTarget) {
+					endCheck = true;
+					goTarget = false;
+				}
+
 			} else {
 				action = true;
 			}
@@ -217,13 +245,12 @@ public class PlayerControl : MonoBehaviour {
 
 
 		if (endCheck) {
+			Debug.Log (goHome);
+			Debug.Log (goTarget);
+		
 
-
-			if (goTarget) {
-					mapData.TileBuilder (name);//with parameter sending 
-					goTarget = false;
-			}
-
+			mapData.TileBuilder (name);//with parameter sending 
+	
 			endCheck = false;
 
 			Debug.Log (endCheck);
@@ -249,20 +276,75 @@ public class PlayerControl : MonoBehaviour {
 
 		if (Observer ((int)x, (int)y) == 0) {
 			//Start Event
-			goTarget = true;
+			//which house ?
+			if ((int)x == 4 && (int)y == 0) {
+				//First's house 
+				if (name == "First") {
+					
+					goTarget = true;
 
+					if (goHome) {
+						endCheck = true;
+						goHome = false;
 
-			if (MoveMent) {
-				endCheck = true;
-				MoveMent = false;
+						Debug.Log (goHome);
+					}
+				}
+
+			} else if ((int)x == 4 && (int)y == 8) {
+				//second's house
+
+				if (name == "Second") {
+
+					goTarget = true;
+
+					if (goHome) {
+						endCheck = true;
+						goHome = false;
+
+						Debug.Log (goHome);
+					}
+				}
+			
+			} else if ((int)x == 8 && (int)y == 4) {
+				//third's house
+
+				if (name == "Third") {
+
+					goTarget = true;
+
+					if (goHome) {
+						endCheck = true;
+						goHome = false;
+
+						Debug.Log (goHome);
+					}
+				}
+
+			} else if ((int)x == 0 && (int)y == 4) {
+				//fourth's house
+			
+				if (name == "Fourth") {
+
+					goTarget = true;
+
+					if (goHome) {
+						endCheck = true;
+						goHome = false;
+
+						Debug.Log (goHome);
+					}
+				}
+
 			}
+
 
 		} else if (Observer ((int)x, (int)y) == 1) {
 			//Road Event
 
 		} else if (Observer ((int)x, (int)y) == 2) {
 			//End Event
-	
+
 		} else if (Observer ((int)x, (int)y) == 3) {
 			//Obstacle Event
 			Debug.Log("Obstacle Point");
@@ -294,7 +376,6 @@ public class PlayerControl : MonoBehaviour {
 			down = false;
 			left = false;
 			right = false;
-			MoveMent = true; //just move 
 
 		}
 
@@ -305,7 +386,6 @@ public class PlayerControl : MonoBehaviour {
 			up = false; //moving action!
 			left = false;
 			right = false;
-			MoveMent = true;
 
 		}
 
@@ -316,7 +396,6 @@ public class PlayerControl : MonoBehaviour {
 			up = false; //moving action!
 			left = true;
 			right = false;
-			MoveMent = true;
 
 		}
 
@@ -327,7 +406,6 @@ public class PlayerControl : MonoBehaviour {
 			up = false; //moving action!
 			left = false;
 			right = true;
-			MoveMent = true;
 		}
 
 	}

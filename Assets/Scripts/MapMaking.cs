@@ -46,18 +46,6 @@ public class MapMaking : MonoBehaviour {
 		MakeShuffle (Player1_ObstacleCount);
 
 
-		/*
-		for (int i = 0; i < Player1_ObstacleCount.Length; i++) {
-			Player1_ObstacleCount [i] = i;
-		}
-
-		Set_Shuffle(Player1_ObstacleCount);
-
-		for (int i = 0; i < Player1_ObstacleCount.Length; i++) {
-			Debug.Log ("Shuffle : " + Player1_ObstacleCount [i]);
-		}
-		*/
-
 		//need reshuffling 
 
 		//Player2_ObstacleCount = new int[7];
@@ -157,7 +145,7 @@ public class MapMaking : MonoBehaviour {
 
 		if (name == "First") {
 
-			Debug.Log ("P1_ObstacleCount : " + P1_ObstacleCount);
+			//Debug.Log ("P1_ObstacleCount : " + P1_ObstacleCount);
 		
 			if (P1_ObstacleCount >= 7) {
 				Debug.Log ("End!");
@@ -165,7 +153,7 @@ public class MapMaking : MonoBehaviour {
 				ObstacleCount = ObstacleCount - 8;
 				P1_ObstacleCount = 0;
 
-				Debug.Log (ObstacleCount);
+				//Debug.Log (ObstacleCount);
 
 				//reset P1_Obstacle
 				for (int i = 0; i < tilexy[0].obstacle.Length ; i++) {
@@ -187,10 +175,7 @@ public class MapMaking : MonoBehaviour {
 
 
 			} else {
-
-				//Debug.Log ("Obstacle Count : " +  P1_ObstacleCount);
-				//Debug.Log ("X : " + tilexy [0].Player1Obstacle [P1_ObstacleCount].x + " Y : " + tilexy [0].Player1Obstacle [P1_ObstacleCount].y);
-
+				
 				tilexy [0].obstacle [ObstacleCount].x = tilexy [0].Player1Obstacle [Player1_ObstacleCount [P1_ObstacleCount]].x;
 				tilexy [0].obstacle [ObstacleCount].y = tilexy [0].Player1Obstacle [Player1_ObstacleCount [P1_ObstacleCount]].y;
 
@@ -203,21 +188,42 @@ public class MapMaking : MonoBehaviour {
 
 		} else if (name == "Second") {
 
-				if ( P2_ObstacleCount >= 7) {
-					Debug.Log ("End!");
+			if (P2_ObstacleCount >= 7) {
+				Debug.Log ("End!");
 
-				} else {
+				ObstacleCount = ObstacleCount - 8;
+				P2_ObstacleCount = 0;
 
-					//Debug.Log ("Obstacle Count : " +  P1_ObstacleCount);
-					//Debug.Log ("X : " + tilexy [0].Player1Obstacle [P1_ObstacleCount].x + " Y : " + tilexy [0].Player1Obstacle [P1_ObstacleCount].y);
+				//Debug.Log (ObstacleCount);
 
-					tilexy [0].obstacle [ObstacleCount].x = tilexy [0].Player2Obstacle [Player2_ObstacleCount[P2_ObstacleCount]].x;
-					tilexy [0].obstacle [ObstacleCount].y = tilexy [0].Player2Obstacle [Player2_ObstacleCount[P2_ObstacleCount]].y;
+				//reset P1_Obstacle
+				for (int i = 0; i < tilexy[0].obstacle.Length ; i++) {
+					for (int j = 0; j < tilexy [0].Player2Obstacle.Length; j++) {
+
+						if (tilexy [0].obstacle [i].x == tilexy [0].Player2Obstacle [j].x && tilexy [0].obstacle [i].y == tilexy [0].Player2Obstacle [j].y) {
+							Debug.Log ("Delete Previous Data");
+							tilexy [0].obstacle [i].x = 10;
+							tilexy [0].obstacle [i].y = 10;
 
 
-					P2_ObstacleCount++; //P1's Obstacle Count increase 
-					CountUp = true;
+						}
+					}
 				}
+
+				MakeShuffle (Player2_ObstacleCount);
+
+				CountUp = true;
+
+
+			} else {
+
+				tilexy [0].obstacle [ObstacleCount].x = tilexy [0].Player2Obstacle [Player2_ObstacleCount [P2_ObstacleCount]].x;
+				tilexy [0].obstacle [ObstacleCount].y = tilexy [0].Player2Obstacle [Player2_ObstacleCount [P2_ObstacleCount]].y;
+
+
+				P2_ObstacleCount++; //P1's Obstacle Count increase 
+				CountUp = true;
+			}
 
 		} 
 			
@@ -246,7 +252,7 @@ public class MapMaking : MonoBehaviour {
 	
 	}
 
-
+	//Player's crash and Player movement 
 
 
 }
