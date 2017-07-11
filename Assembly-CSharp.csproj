@@ -50,9 +50,12 @@
      <Compile Include="Assets\Scripts\ClickableTile.cs" />
      <Compile Include="Assets\Scripts\MapGeneration.cs" />
      <Compile Include="Assets\Scripts\MapMaking.cs" />
+     <Compile Include="Assets\Scripts\Player2Control.cs" />
+     <Compile Include="Assets\Scripts\Player3Control.cs" />
+     <Compile Include="Assets\Scripts\Player4Control.cs" />
      <Compile Include="Assets\Scripts\PlayerControl.cs" />
-     <Compile Include="Assets\Scripts\TileEvent.cs" />
      <Compile Include="Assets\Scripts\TileType.cs" />
+     <Compile Include="Assets\Scripts\crash.cs" />
      <Compile Include="Assets\Scripts\tileXY.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

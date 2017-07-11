@@ -20,26 +20,29 @@ public class PlayerControl : MonoBehaviour {
 	bool endCheck = false;
 	bool goHome = false; 
 	bool warp = false;
+    public bool crashing = false;
+    bool action = false;
 
-	private float x; //location
+    private float x; //location
 	private float y; 
 
-	private float lastx = 0;
-	private float lasty = 0; //previous location
+	public float lastx = 0;
+	public float lasty = 0; //previous location
 
 	private float posY = 0.0f;
 	private float posX = 0.0f;
+    public int Item = 0; // 도토리 
 
 	private MapMaking mapData;
 	private GameSetup setup;
-	public string name = "";
+	private string name;
 	private bool goTarget = true; //if true go to the Target place otherwise go home so if true 
 
 
 
 	// Use this for initialization
 	void Start () {
-		//name = "First"; //setting name of mouse
+		name = "First"; //setting name of mouse
 	}
 
 	void Awake(){
@@ -51,10 +54,10 @@ public class PlayerControl : MonoBehaviour {
 	void Update () {
 		moveCheck ();
 
-		if (up) {
+        if (up) {
 			posY = y + 1.0f;
 
-			bool action = false;
+			//bool action = false;
 
 			if (BoundaryCheck ((int)x, (int)posY)) {
 	
@@ -62,7 +65,19 @@ public class PlayerControl : MonoBehaviour {
 				action = false;
 				up = false; // play once 
 
-			} else if (Observer ((int)x, (int)posY) == 2) {
+			}
+            else if (PlayerCheck((int)x,(int)posY) == true)
+            {
+                //If crash another character
+
+                Debug.Log("Crashing with another Player");
+
+                transform.position = new Vector3((int)lastx, 1, (int)lasty);
+                action = false;
+                up = false; // play once 
+            }
+
+            else if (Observer ((int)x, (int)posY) == 2) {
 				action = false;
 				transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
 				locationCheck = true;
@@ -86,8 +101,9 @@ public class PlayerControl : MonoBehaviour {
 					run = 0;
 					up = false; // play once 
 					locationCheck = true;
+                    action = false;
 
-				} else {
+                } else {
 					run = 1;
 				}
 				transform.Translate (Vector3.forward * Time.deltaTime * speed * run);
@@ -99,7 +115,7 @@ public class PlayerControl : MonoBehaviour {
 
 			posY = y - 1.0f;
 
-			bool action = false;
+			//bool action = false;
 
 			if (BoundaryCheck ((int)x, (int)posY)) {
 
@@ -107,11 +123,20 @@ public class PlayerControl : MonoBehaviour {
 				action = false;
 				down = false;
 
-			} else if (Observer ((int)x, (int)posY) == 2) {
+            }
 
-				Debug.Log ("End!"); //end  
-				endCheck = true;
-				            
+            else if (PlayerCheck((int)x, (int)posY) == true)
+            {
+                //If crash another character
+
+                Debug.Log("Crashing with another Player");
+
+                transform.position = new Vector3((int)lastx, 1, (int)lasty);
+                action = false;
+                down = false; // play once 
+            }
+
+            else if (Observer ((int)x, (int)posY) == 2) {
 				action = false;
 				transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
 				locationCheck = true;
@@ -135,8 +160,10 @@ public class PlayerControl : MonoBehaviour {
 					run = 0;
 					down = false; // play once 
 					locationCheck = true;
+                    action = false;
 
-				} else {
+                }
+                else {
 					run = 1;
 				}
 				transform.Translate (Vector3.back * Time.deltaTime * speed * run);
@@ -148,18 +175,28 @@ public class PlayerControl : MonoBehaviour {
 
 			posX = x - 1.0f;
 
-			bool action = false;
+//			bool action = false;
 
 			if (BoundaryCheck ((int)posX, (int)y)) {
 	
 				transform.position = new Vector3 ((int)x, 1, (int)y);
 				action = false;
-				up = false; // play once 
+				left = false; // play once 
 
-			} else if (Observer ((int)posX, (int)y) == 2) {
+			}
 
-				Debug.Log ("End!");
-				endCheck = true;
+            else if (PlayerCheck((int)posX, (int)y) == true)
+            {
+                //If crash another character
+
+                Debug.Log("Crashing with another Player");
+
+                transform.position = new Vector3((int)lastx, 1, (int)lasty);
+                action = false;
+                left = false; // play once 
+            }
+
+            else if (Observer ((int)posX, (int)y) == 2) {
 				action = false;
 				transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
 
@@ -184,8 +221,11 @@ public class PlayerControl : MonoBehaviour {
 					Debug.Log ("Arrived");
 					run = 0;
 					left = false;
+                    action = false;
 
-				} else {
+
+                }
+                else {
 					run = 1;
 				}
 				transform.Translate (Vector3.left * Time.deltaTime * speed * run);
@@ -196,14 +236,24 @@ public class PlayerControl : MonoBehaviour {
 
 			posX = x + 1.0f;
 
-			bool action = false;
+			//bool action = false;
 
 			if (BoundaryCheck ((int)posX, (int)y) == true) {
 				transform.position = new Vector3 ((int)x, 1, (int)y);
-			} else if (Observer ((int)posX, (int)y) == 2) {
-				Debug.Log ("End!"); //end  
-				endCheck = true;
-				            
+			}
+
+            else if (PlayerCheck((int)posX, (int)y) == true)
+            {
+                //If crash another character
+
+                Debug.Log("Crashing with another Player");
+
+                transform.position = new Vector3((int)lastx, 1, (int)lasty);
+                action = false;
+                right = false; // play once 
+            }
+
+            else if (Observer ((int)posX, (int)y) == 2) {
 				action = false;
 				transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
 				locationCheck = true;
@@ -227,11 +277,13 @@ public class PlayerControl : MonoBehaviour {
 				if (transform.position.x >= posX && transform.position.z >= y) {
 				
 					locationCheck = true;
-					Debug.Log ("Arrived");
+					//Debug.Log ("Arrived");
 					run = 0;
 					right = false;
+                    action = false;
 
-				} else {
+                }
+                else {
 					run = 1;
 				}
 				transform.Translate (Vector3.right * Time.deltaTime * speed * run);
@@ -245,8 +297,8 @@ public class PlayerControl : MonoBehaviour {
 
 
 		if (endCheck) {
-			Debug.Log (goHome);
-			Debug.Log (goTarget);
+			//Debug.Log (goHome);
+			//Debug.Log (goTarget);
 		
 
 			mapData.TileBuilder (name);//with parameter sending 
@@ -487,7 +539,31 @@ public class PlayerControl : MonoBehaviour {
 		lasty = (int)transform.position.z;
 	}
 
-	bool BoundaryCheck(int a, int b){
+    bool PlayerCheck(int a, int b)
+    {
+        int count = 0;
+
+        for (int i = 0; i < setup.playerLocation.Length; i++)
+        {
+            if (a == setup.playerLocation[i].x && b == setup.playerLocation[i].y)
+            {
+                count++;
+            }
+
+        }
+
+        if (count >= 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    bool BoundaryCheck(int a, int b){
 		if (a < 0 || b < 0) {
 			Debug.Log ("away from land");
 			x = (int)(lastx); 
@@ -502,5 +578,7 @@ public class PlayerControl : MonoBehaviour {
 			return false;
 		}
 	}
+
+
 }
 //MAKE WARP AND PLAYER 2 , 3 , 4 돌아 올 때도 랜덤

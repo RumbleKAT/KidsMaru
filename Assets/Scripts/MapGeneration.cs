@@ -8,7 +8,7 @@ public class MapGeneration : MonoBehaviour {
 	public Transform tilePrefab;
 	public int mapSize;
 
-	int [,] tilesData;
+//	int [,] tilesData;
 
 	[Range(0,1)]
 	public float outlinePercent;
@@ -20,10 +20,10 @@ public class MapGeneration : MonoBehaviour {
 
 
 	public void GeneratorMap(){
-
+		/*
 
 	//allocate
-		tilesData = new int[mapSize, mapSize];
+		int [,] tilesData = new int[mapSize, mapSize];
 
 
 		//Initialize
@@ -34,6 +34,6 @@ public class MapGeneration : MonoBehaviour {
 				newTile.localScale = Vector3.one * (1-outlinePercent);
 			}
 		}
-	
+	*/
 	}
 }
