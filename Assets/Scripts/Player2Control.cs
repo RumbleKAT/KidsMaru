@@ -35,14 +35,14 @@ public class Player2Control : MonoBehaviour {
 
 	private MapMaking mapData;
 	private GameSetup setup;
-	private string name;
+	private string Playername;
 	private bool goTarget = true; //if true go to the Target place otherwise go home so if true 
 
 
 
 	// Use this for initialization
 	void Start () {
-		name = "Second"; //setting name of mouse
+		Playername = "Second"; //setting name of mouse
 	}
 
 	void Awake(){
@@ -54,8 +54,6 @@ public class Player2Control : MonoBehaviour {
 	void Update () {
 		moveCheck ();
 
-//		Debug.Log ("GoTarget : " + goTarget + " GoHome : " + goHome );
-
 		if (right) {
 			posY = y + 1.0f;
 
@@ -66,8 +64,20 @@ public class Player2Control : MonoBehaviour {
 				transform.position = new Vector3 ((int)x, 1, (int)y);
 				action = false;
 				right = false; // play once 
+				locationCheck = true;
 
 			}
+			//Obstacle check
+			else if (Observer ((int)x, (int)posY) == 3) {
+
+				Debug.Log ("Meet Obstacle!");
+				transform.position = new Vector3 ((int)x, 1, (int)y);
+				action = false;
+				right = false; // play once 
+				locationCheck = true;
+
+			}
+
 			else if (PlayerCheck((int)x,(int)posY) == true)
 			{
 				//If crash another character
@@ -77,13 +87,15 @@ public class Player2Control : MonoBehaviour {
 				transform.position = new Vector3((int)lastx, 1, (int)lasty);
 				action = false;
 				right = false; // play once 
+				locationCheck = true;
+
 			}
 
 			else if (Observer ((int)x, (int)posY) == 2) {
 				action = false;
 				transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
-				locationCheck = true;
 				right = false; // play once 
+				locationCheck = true;
 
 				goHome = true;
 
@@ -124,6 +136,17 @@ public class Player2Control : MonoBehaviour {
 				transform.position = new Vector3 ((int)x, 1, (int)y);
 				action = false;
 				left = false;
+				locationCheck = true;
+
+			}
+
+			else if (Observer ((int)x, (int)posY) == 3) {
+
+				Debug.Log ("Meet Obstacle!");
+				transform.position = new Vector3 ((int)x, 1, (int)y);
+				action = false;
+				left = false; // play once 
+				locationCheck = true;
 
 			}
 
@@ -132,17 +155,18 @@ public class Player2Control : MonoBehaviour {
 				//If crash another character
 
 				Debug.Log("Crashing with another Player");
-
 				transform.position = new Vector3((int)lastx, 1, (int)lasty);
 				action = false;
 				left = false; // play once 
+				locationCheck = true;
+
 			}
 
 			else if (Observer ((int)x, (int)posY) == 2) {
 				action = false;
 				transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
-				locationCheck = true;
 				left = false; // play once
+				locationCheck = true;
 
 				goHome = true;
 
@@ -161,8 +185,8 @@ public class Player2Control : MonoBehaviour {
 				if (transform.position.x >= x && transform.position.z <= posY) {
 					run = 0;
 					left = false; // play once 
-					locationCheck = true;
 					action = false;
+					locationCheck = true;
 
 				}
 				else {
@@ -184,8 +208,20 @@ public class Player2Control : MonoBehaviour {
 				transform.position = new Vector3 ((int)x, 1, (int)y);
 				action = false;
 				up = false; // play once 
+				locationCheck = true;
 
 			}
+
+			else if (Observer ((int)posX, (int)y) == 3) {
+
+				Debug.Log ("Meet Obstacle!");
+				transform.position = new Vector3 ((int)x, 1, (int)y);
+				action = false;
+				up = false; // play once 
+				locationCheck = true;
+
+			}
+
 
 			else if (PlayerCheck((int)posX, (int)y) == true)
 			{
@@ -196,6 +232,8 @@ public class Player2Control : MonoBehaviour {
 				transform.position = new Vector3((int)lastx, 1, (int)lasty);
 				action = false;
 				up = false; // play once 
+				locationCheck = true;
+
 			}
 
 			else if (Observer ((int)posX, (int)y) == 2) {
@@ -244,6 +282,18 @@ public class Player2Control : MonoBehaviour {
 				transform.position = new Vector3 ((int)x, 1, (int)y);
 				action = false;
 				down = false; // play once 
+				locationCheck = true;
+			}
+
+			else if (Observer ((int)posX, (int)y) == 3) {
+
+				Debug.Log ("Meet Obstacle!");
+				transform.position = new Vector3 ((int)x, 1, (int)y);
+				action = false;
+				down = false; // play once 
+				locationCheck = true;
+
+
 			}
 
 			else if (PlayerCheck((int)posX, (int)y) == true)
@@ -255,6 +305,8 @@ public class Player2Control : MonoBehaviour {
 				transform.position = new Vector3((int)lastx, 1, (int)lasty);
 				action = false;
 				down = false; // play once 
+				locationCheck = true;
+
 			}
 
 			else if (Observer ((int)posX, (int)y) == 2) {
@@ -305,7 +357,7 @@ public class Player2Control : MonoBehaviour {
 			//Debug.Log (goTarget);
 
 
-			mapData.TileBuilder (name);//with parameter sending 
+			mapData.TileBuilder (Playername);//with parameter sending 
 
 			endCheck = false;
 
@@ -335,7 +387,7 @@ public class Player2Control : MonoBehaviour {
 			//which house ?
 			if ((int)x == 4 && (int)y == 0) {
 				//First's house 
-				if (name == "First") {
+				if (Playername == "First") {
 
 					goTarget = true;
 
@@ -350,7 +402,7 @@ public class Player2Control : MonoBehaviour {
 			} else if ((int)x == 8 && (int)y == 4) {
 				//second's house
 
-				if (name == "Second") {
+				if (Playername == "Second") {
 
 					goTarget = true;
 
@@ -365,7 +417,7 @@ public class Player2Control : MonoBehaviour {
 			} else if ((int)x == 4 && (int)y == 8) {
 				//third's house
 
-				if (name == "Third") {
+				if (Playername == "Third") {
 
 					goTarget = true;
 
@@ -380,7 +432,7 @@ public class Player2Control : MonoBehaviour {
 			} else if ((int)x == 0 && (int)y == 4) {
 				//fourth's house
 
-				if (name == "Fourth") {
+				if (Playername == "Fourth") {
 
 					goTarget = true;
 
@@ -394,7 +446,6 @@ public class Player2Control : MonoBehaviour {
 
 			}
 
-
 		} else if (Observer ((int)x, (int)y) == 1) {
 			//Road Event
 
@@ -403,8 +454,8 @@ public class Player2Control : MonoBehaviour {
 
 		} else if (Observer ((int)x, (int)y) == 3) {
 			//Obstacle Event
-			Debug.Log("Obstacle Point");
-			transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
+			//	Debug.Log("Obstacle Point");
+			//	transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
 
 		}
 		else if (Observer ((int)x, (int)y) == 4) {
@@ -414,6 +465,9 @@ public class Player2Control : MonoBehaviour {
 
 		}
 
+		if (BoundaryCheck ((int)x, (int)y)) {
+			setLastlocation ();
+		}
 
 
 	}
@@ -541,6 +595,10 @@ public class Player2Control : MonoBehaviour {
 	void setLastlocation(){
 		lastx = (int)transform.position.x;
 		lasty = (int)transform.position.z;
+
+		if (Observer ((int)lastx, (int)lasty) == 4) {
+			warp = true;
+		}
 	}
 
 	bool PlayerCheck(int a, int b)
@@ -567,6 +625,7 @@ public class Player2Control : MonoBehaviour {
 
 	}
 
+
 	bool BoundaryCheck(int a, int b){
 		if (a < 0 || b < 0) {
 			Debug.Log ("away from land");
@@ -582,5 +641,4 @@ public class Player2Control : MonoBehaviour {
 			return false;
 		}
 	}
-
 }

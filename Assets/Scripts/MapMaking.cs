@@ -5,6 +5,7 @@ using UnityEngine;
 public class MapMaking : MonoBehaviour {
 
 	public TileType [] tiletypes;
+	public ObstacleType[] obstacletypes;
 	public int[,] tiles;
 	public tileXY [] tilexy;
 	public int ObstacleCount;
@@ -128,7 +129,19 @@ public class MapMaking : MonoBehaviour {
 		for (int x = 0; x < mapSize; x++) {
 			for (int y = 0; y < mapSize; y++) {
 				TileType tile = tiletypes [tiles [x, y]]; //when obstacle random 
-				GameObject go = (GameObject)Instantiate (tile.tileViualPrefab, new Vector3(x,0,y),Quaternion.identity);
+				GameObject go;
+
+				if (tiles [x, y] == 3) {
+					
+					int a = Random.Range (0, 4);
+
+					Debug.Log (a);
+
+					go = (GameObject)Instantiate (obstacletypes[a].ObstaclePrefab, new Vector3 (x, 0, y), Quaternion.identity);
+
+				} else {
+					 go = (GameObject)Instantiate (tile.tileViualPrefab, new Vector3 (x, 0, y), Quaternion.identity);
+				}
 				ct = go.GetComponent<ClickableTile> ();
 				ct.tileX = x;
 				ct.tileY = y;
@@ -148,7 +161,87 @@ public class MapMaking : MonoBehaviour {
 	}
 
 
+	public void TileReset(string name){
 
+		if (name == "First")
+		{
+				Debug.Log("End!");
+
+				ObstacleCount = ObstacleCount - P1_ObstacleCount;
+				P1_ObstacleCount = 0;
+
+				//Debug.Log (ObstacleCount);
+
+				//reset P1_Obstacle
+				for (int i = 0; i < tilexy[0].obstacle.Length; i++)
+				{
+					for (int j = 0; j < tilexy[0].Player1Obstacle.Length; j++)
+					{
+
+						if (tilexy[0].obstacle[i].x == tilexy[0].Player1Obstacle[j].x && tilexy[0].obstacle[i].y == tilexy[0].Player1Obstacle[j].y)
+						{
+							Debug.Log("Delete Previous Data");
+							tilexy[0].obstacle[i].x = 10;
+							tilexy[0].obstacle[i].y = 10;
+
+						}
+					}
+				}
+
+				//10이 아닌 모든 장애물을 하나의 배열에 묶어서 다시 저장 
+
+				int Obstacle_count = 0;
+
+				for (int i = 0; i < tilexy[0].obstacle.Length; i++)
+				{
+					if (tilexy[0].obstacle[i].x != 10 && tilexy[0].obstacle[i].y != 10)
+					{
+						Debug.Log(tilexy[0].obstacle[i].x + " " + tilexy[0].obstacle[i].y);
+						Obstacle_count++;
+					}
+				}
+
+				Debug.Log("Left Things : " + Obstacle_count);
+
+				Vector2[] Obstacle = new Vector2[Obstacle_count];
+
+				int start = 0;
+
+				for (int i = 0; i < tilexy[0].obstacle.Length; i++)
+				{
+					if (tilexy[0].obstacle[i].x != 10 && tilexy[0].obstacle[i].y != 10)
+					{
+						Obstacle[start] = tilexy[0].obstacle[i];
+						start++;
+					}
+				}
+
+				Debug.Log(Obstacle.Length);
+
+
+				for (int i = 0; i < Obstacle.Length; i++)
+				{
+					tilexy[0].obstacle[i].x = Obstacle[i].x;
+					tilexy[0].obstacle[i].y = Obstacle[i].y;
+				}
+
+
+				MakeShuffle(Player1_ObstacleCount);
+
+				//	CountUp = true;
+
+				DestoryAllTile();  //you should remap 
+				GenerateMapData(ObstacleCount);
+				GenerateMapVisual();
+
+				reset = true;
+				CountUp = true;
+
+		
+		}
+	
+	
+	}
 
     public void TileBuilder(string name)
     {

@@ -20,7 +20,6 @@ public class GameSetup : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		settingPosition ();
-		//mouse = GameObject.FindWithTag ("Player");
 	}
 
 
@@ -37,8 +36,21 @@ public class GameSetup : MonoBehaviour {
 		player4.gameObject.transform.position = new Vector3 (0, 1, 4);
 	}
 
+ 	public	void resetPosition(string name){
+	
+		if (name == "First") {
+			player1.gameObject.transform.position = new Vector3 (4, 1, 0);
+		} else if (name == "Second") {
+			player2.gameObject.transform.position = new Vector3 (4, 1, 8);
+		} else if (name == "Third") {
+			player3.gameObject.transform.position = new Vector3 (8, 1, 4);
+		} else {
+			player4.gameObject.transform.position = new Vector3 (0, 1, 4);
+		}
+	
+	}
+
 	void Awake(){
-		//mapdata = Map.GetComponent<MapMaking> ();
 		tilexy = GameObject.Find("GameObject").GetComponents<tileXY>();
 		playerLocation = new Vector2[4];
 
@@ -61,7 +73,6 @@ public class GameSetup : MonoBehaviour {
 		playerLocation [3].y = player4.gameObject.transform.position.z;
 
 	}
-		
 
 
 	public bool checkObstacle(int x , int y){
