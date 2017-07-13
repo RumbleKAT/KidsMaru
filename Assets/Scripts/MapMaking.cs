@@ -135,7 +135,7 @@ public class MapMaking : MonoBehaviour {
 					
 					int a = Random.Range (0, 4);
 
-					Debug.Log (a);
+				//	Debug.Log (a);
 
 					go = (GameObject)Instantiate (obstacletypes[a].ObstaclePrefab, new Vector3 (x, 0, y), Quaternion.identity);
 
@@ -238,10 +238,248 @@ public class MapMaking : MonoBehaviour {
 				CountUp = true;
 
 		
-		}
+		} else if (name == "Second")
+		{
+			Debug.Log("End!");
+
+			ObstacleCount = ObstacleCount - P2_ObstacleCount;
+			P2_ObstacleCount = 0;
+
+			//Debug.Log (ObstacleCount);
+
+			//reset P1_Obstacle
+			for (int i = 0; i < tilexy[0].obstacle.Length; i++)
+			{
+				for (int j = 0; j < tilexy[0].Player2Obstacle.Length; j++)
+				{
+
+					if (tilexy[0].obstacle[i].x == tilexy[0].Player2Obstacle[j].x && tilexy[0].obstacle[i].y == tilexy[0].Player2Obstacle[j].y)
+					{
+						Debug.Log("Delete Previous Data");
+						tilexy[0].obstacle[i].x = 10;
+						tilexy[0].obstacle[i].y = 10;
+
+					}
+				}
+			}
+
+			//10이 아닌 모든 장애물을 하나의 배열에 묶어서 다시 저장 
+
+			int Obstacle_count = 0;
+
+			for (int i = 0; i < tilexy[0].obstacle.Length; i++)
+			{
+				if (tilexy[0].obstacle[i].x != 10 && tilexy[0].obstacle[i].y != 10)
+				{
+					Debug.Log(tilexy[0].obstacle[i].x + " " + tilexy[0].obstacle[i].y);
+					Obstacle_count++;
+				}
+			}
+
+			Debug.Log("Left Things : " + Obstacle_count);
+
+			Vector2[] Obstacle = new Vector2[Obstacle_count];
+
+			int start = 0;
+
+			for (int i = 0; i < tilexy[0].obstacle.Length; i++)
+			{
+				if (tilexy[0].obstacle[i].x != 10 && tilexy[0].obstacle[i].y != 10)
+				{
+					Obstacle[start] = tilexy[0].obstacle[i];
+					start++;
+				}
+			}
+
+			Debug.Log(Obstacle.Length);
+
+
+			for (int i = 0; i < Obstacle.Length; i++)
+			{
+				tilexy[0].obstacle[i].x = Obstacle[i].x;
+				tilexy[0].obstacle[i].y = Obstacle[i].y;
+			}
+
+
+			MakeShuffle(Player2_ObstacleCount);
+
+			//	CountUp = true;
+
+			DestoryAllTile();  //you should remap 
+			GenerateMapData(ObstacleCount);
+			GenerateMapVisual();
+
+			reset = true;
+			CountUp = true;
+
+
+		} else if (name == "Third")
+		{
+			Debug.Log("End!");
+
+			ObstacleCount = ObstacleCount - P3_ObstacleCount;
+			P3_ObstacleCount = 0;
+
+			//Debug.Log (ObstacleCount);
+
+			//reset P1_Obstacle
+			for (int i = 0; i < tilexy[0].obstacle.Length; i++)
+			{
+				for (int j = 0; j < tilexy[0].Player3Obstacle.Length; j++)
+				{
+
+					if (tilexy[0].obstacle[i].x == tilexy[0].Player3Obstacle[j].x && tilexy[0].obstacle[i].y == tilexy[0].Player3Obstacle[j].y)
+					{
+						Debug.Log("Delete Previous Data");
+						tilexy[0].obstacle[i].x = 10;
+						tilexy[0].obstacle[i].y = 10;
+
+					}
+				}
+			}
+
+			//10이 아닌 모든 장애물을 하나의 배열에 묶어서 다시 저장 
+
+			int Obstacle_count = 0;
+
+			for (int i = 0; i < tilexy[0].obstacle.Length; i++)
+			{
+				if (tilexy[0].obstacle[i].x != 10 && tilexy[0].obstacle[i].y != 10)
+				{
+					Debug.Log(tilexy[0].obstacle[i].x + " " + tilexy[0].obstacle[i].y);
+					Obstacle_count++;
+				}
+			}
+
+			Debug.Log("Left Things : " + Obstacle_count);
+
+			Vector2[] Obstacle = new Vector2[Obstacle_count];
+
+			int start = 0;
+
+			for (int i = 0; i < tilexy[0].obstacle.Length; i++)
+			{
+				if (tilexy[0].obstacle[i].x != 10 && tilexy[0].obstacle[i].y != 10)
+				{
+					Obstacle[start] = tilexy[0].obstacle[i];
+					start++;
+				}
+			}
+
+			Debug.Log(Obstacle.Length);
+
+
+			for (int i = 0; i < Obstacle.Length; i++)
+			{
+				tilexy[0].obstacle[i].x = Obstacle[i].x;
+				tilexy[0].obstacle[i].y = Obstacle[i].y;
+			}
+
+
+			MakeShuffle(Player3_ObstacleCount);
+
+			//	CountUp = true;
+
+			DestoryAllTile();  //you should remap 
+			GenerateMapData(ObstacleCount);
+			GenerateMapVisual();
+
+			reset = true;
+			CountUp = true;
+
+
+		} 
+
+		else if (name == "Fourth")
+		{
+			Debug.Log("End!");
+
+			ObstacleCount = ObstacleCount - P4_ObstacleCount;
+			P4_ObstacleCount = 0;
+
+			//Debug.Log (ObstacleCount);
+
+			//reset P1_Obstacle
+			for (int i = 0; i < tilexy[0].obstacle.Length; i++)
+			{
+				for (int j = 0; j < tilexy[0].Player3Obstacle.Length; j++)
+				{
+
+					if (tilexy[0].obstacle[i].x == tilexy[0].Player4Obstacle[j].x && tilexy[0].obstacle[i].y == tilexy[0].Player4Obstacle[j].y)
+					{
+						Debug.Log("Delete Previous Data");
+						tilexy[0].obstacle[i].x = 10;
+						tilexy[0].obstacle[i].y = 10;
+
+					}
+				}
+			}
+
+			//10이 아닌 모든 장애물을 하나의 배열에 묶어서 다시 저장 
+
+			int Obstacle_count = 0;
+
+			for (int i = 0; i < tilexy[0].obstacle.Length; i++)
+			{
+				if (tilexy[0].obstacle[i].x != 10 && tilexy[0].obstacle[i].y != 10)
+				{
+					Debug.Log(tilexy[0].obstacle[i].x + " " + tilexy[0].obstacle[i].y);
+					Obstacle_count++;
+				}
+			}
+
+			Debug.Log("Left Things : " + Obstacle_count);
+
+			Vector2[] Obstacle = new Vector2[Obstacle_count];
+
+			int start = 0;
+
+			for (int i = 0; i < tilexy[0].obstacle.Length; i++)
+			{
+				if (tilexy[0].obstacle[i].x != 10 && tilexy[0].obstacle[i].y != 10)
+				{
+					Obstacle[start] = tilexy[0].obstacle[i];
+					start++;
+				}
+			}
+
+			Debug.Log(Obstacle.Length);
+
+
+			for (int i = 0; i < Obstacle.Length; i++)
+			{
+				tilexy[0].obstacle[i].x = Obstacle[i].x;
+				tilexy[0].obstacle[i].y = Obstacle[i].y;
+			}
+
+
+			MakeShuffle(Player4_ObstacleCount);
+
+			//	CountUp = true;
+
+			DestoryAllTile();  //you should remap 
+			GenerateMapData(ObstacleCount);
+			GenerateMapVisual();
+
+			reset = true;
+			CountUp = true;
+
+
+		} 
+
+
+
 	
 	
 	}
+
+
+
+
+
+
+
+
 
     public void TileBuilder(string name)
     {

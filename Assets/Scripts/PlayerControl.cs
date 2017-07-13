@@ -62,6 +62,7 @@ public class PlayerControl : MonoBehaviour {
 			goTarget = true; 
 			goHome = false; 
 			reset = false;
+
 		}
 
         if (up) {
@@ -130,6 +131,7 @@ public class PlayerControl : MonoBehaviour {
                 } else {
 					run = 1;
 				}
+
 				transform.Translate (Vector3.forward * Time.deltaTime * speed * run);
 
 			
@@ -464,8 +466,22 @@ public class PlayerControl : MonoBehaviour {
 
 		} else if (Observer ((int)x, (int)y) == 3) {
 			//Obstacle Event
-		//	Debug.Log("Obstacle Point");
-		//	transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
+			//Debug.Log("Obstacle Point");
+			//transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
+			if (Observer ((int)(x-1), (int)y) != 3) {
+				transform.position = new Vector3 ((int)(x-1), 1, (int)y);	
+			}
+			else if(Observer((int)(x+1),(int)y) !=3) {
+				transform.position = new Vector3 ((int)(x+1), 1, (int)y);	
+			}
+			  else if(Observer((int)(x),(int)(y-1)) != 3) {
+				transform.position = new Vector3 ((int)x, 1, (int)(y-1));	
+			} 
+			else if(Observer((int)(x),(int)(y+1)) != 3) {
+				transform.position = new Vector3 ((int)x, 1, (int)(y+1));	
+			}
+
+
 
 		}
 		else if (Observer ((int)x, (int)y) == 4) {
@@ -565,9 +581,11 @@ public class PlayerControl : MonoBehaviour {
 		//Debug.Log("Player : " + mapData.tilexy[0].obstacle[0].x + " " + mapData.tilexy[0].obstacle[0].y); obstacle
 		//Debug.Log("Player : " + mapData.tilexy[0].Warp[0].x + " " + mapData.tilexy[0].Warp[0].y); warp 
 
-		int WarpX = Random.Range (0, 8);
-		int WarpY = Random.Range (0, 8);
+		int WarpX = Random.Range (0, 9);
+		int WarpY = Random.Range (0, 9);
 		int count_Warp = 0;
+
+		Debug.Log ("WARP X: " + WarpX + " " + "Warp Y: " + WarpY);
 			
 			for (int i = 0; i < (int)setup.playerLocation.Length; i++) {
 				if (WarpX != (int)setup.playerLocation [i].x && WarpY != (int)setup.playerLocation [i].y) {
@@ -577,18 +595,20 @@ public class PlayerControl : MonoBehaviour {
 
 			if (count_Warp == 4) {
 				//no match Player location 
-
+				Debug.Log("low");
 				for (int i = 0; i < mapData.ObstacleCount; i++) {
 					if (WarpX != mapData.tilexy [0].obstacle [i].x && WarpY != mapData.tilexy [0].obstacle [i].y) {
 						count_Warp++;
 					}
 				}
-	
+				Debug.Log ("Obstacle Count : " + mapData.ObstacleCount);
+				Debug.Log ("Count_warp : " + count_Warp);
 			}
 				
 
-			if (count_Warp == 4 + (mapData.ObstacleCount - 1)) {
+			if (count_Warp ==  (mapData.ObstacleCount-4) ) {
 			//no match obstacle
+			Debug.Log("middle");
 				for (int i = 0; i < mapData.tilexy [0].Warp.Length; i++) {
 
 				if (WarpX != mapData.tilexy [0].Warp [i].x && WarpY != mapData.tilexy [0].Warp [i].y) {
@@ -598,10 +618,14 @@ public class PlayerControl : MonoBehaviour {
 
 		}
 
-		if (count_Warp == 8 + (mapData.ObstacleCount - 1)) {
+		if (count_Warp == 4 + mapData.ObstacleCount) {
+
+			Debug.Log("high");
 			Debug.Log ("Determined : " + WarpX + " " + WarpY);
 			transform.position = new Vector3 (WarpX, 1, WarpY);
 		}
+
+		warp = false;
 
 			
 	}
@@ -659,4 +683,3 @@ public class PlayerControl : MonoBehaviour {
 
 
 }
-//MAKE WARP AND PLAYER 2 , 3 , 4 돌아 올 때도 랜덤

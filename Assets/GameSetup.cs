@@ -36,15 +36,15 @@ public class GameSetup : MonoBehaviour {
 		player4.gameObject.transform.position = new Vector3 (0, 1, 4);
 	}
 
- 	public	void resetPosition(string name){
+ 	public void resetPosition(string name){
 	
 		if (name == "First") {
 			player1.gameObject.transform.position = new Vector3 (4, 1, 0);
 		} else if (name == "Second") {
-			player2.gameObject.transform.position = new Vector3 (4, 1, 8);
-		} else if (name == "Third") {
 			player3.gameObject.transform.position = new Vector3 (8, 1, 4);
-		} else {
+		} else if (name == "Third") {
+			player2.gameObject.transform.position = new Vector3 (4, 1, 8);
+		} else if(name == "Fourth"){
 			player4.gameObject.transform.position = new Vector3 (0, 1, 4);
 		}
 	

@@ -22,6 +22,7 @@ public class Player2Control : MonoBehaviour {
 	bool warp = false;
 	public bool crashing = false;
 	bool action = false;
+	bool reset = false;
 
 	private float x; //location
 	private float y; 
@@ -53,6 +54,19 @@ public class Player2Control : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		moveCheck ();
+
+		if (reset) {
+			mapData.TileReset (Playername);//with parameter sending 
+			setup.resetPosition(Playername);
+			//Debug.Log (Playername);
+
+			locationCheck = true;
+			goTarget = true; 
+			goHome = false; 
+			reset = false;
+		}
+
+
 
 		if (right) {
 			posY = y + 1.0f;
@@ -454,8 +468,19 @@ public class Player2Control : MonoBehaviour {
 
 		} else if (Observer ((int)x, (int)y) == 3) {
 			//Obstacle Event
-			//	Debug.Log("Obstacle Point");
-			//	transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
+
+			if (Observer ((int)(x-1), (int)y) != 3) {
+				transform.position = new Vector3 ((int)(x-1), 1, (int)y);	
+			}
+			else if(Observer((int)(x+1),(int)y) !=3) {
+				transform.position = new Vector3 ((int)(x+1), 1, (int)y);	
+			}
+			else if(Observer((int)(x),(int)(y-1)) != 3) {
+				transform.position = new Vector3 ((int)x, 1, (int)(y-1));	
+			} 
+			else if(Observer((int)(x),(int)(y+1)) != 3) {
+				transform.position = new Vector3 ((int)x, 1, (int)(y+1));	
+			}
 
 		}
 		else if (Observer ((int)x, (int)y) == 4) {
@@ -477,6 +502,11 @@ public class Player2Control : MonoBehaviour {
 		if (locationCheck) {
 			getCurrentLocation ();
 			setLastlocation ();
+		}
+
+		if(Input.GetKeyDown(KeyCode.X)){
+			Debug.Log ("Key pressed reset");
+			reset = true;
 		}
 
 		if (Input.GetKeyDown (KeyCode.UpArrow)) {
@@ -588,6 +618,7 @@ public class Player2Control : MonoBehaviour {
 			transform.position = new Vector3 (WarpX, 1, WarpY);
 		}
 
+		warp = false;
 
 	}
 
