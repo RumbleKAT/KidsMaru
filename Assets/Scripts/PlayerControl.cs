@@ -469,16 +469,24 @@ public class PlayerControl : MonoBehaviour {
 			//Debug.Log("Obstacle Point");
 			//transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
 			if (Observer ((int)(x-1), (int)y) != 3) {
-				transform.position = new Vector3 ((int)(x-1), 1, (int)y);	
+				if (PlayerCheck ((int)(x - 1), (int)y) == false) {
+					transform.position = new Vector3 ((int)(x-1), 1, (int)y);	
+				}
 			}
 			else if(Observer((int)(x+1),(int)y) !=3) {
-				transform.position = new Vector3 ((int)(x+1), 1, (int)y);	
+				if (PlayerCheck ((int)(x + 1), (int)y) == false) {
+					transform.position = new Vector3 ((int)(x+1), 1, (int)y);	
+				}
 			}
 			  else if(Observer((int)(x),(int)(y-1)) != 3) {
-				transform.position = new Vector3 ((int)x, 1, (int)(y-1));	
+				if (PlayerCheck ((int)(x), (int)(y-1)) == false) {
+					transform.position = new Vector3 ((int)(x), 1, (int)(y-1));	
+				}
 			} 
 			else if(Observer((int)(x),(int)(y+1)) != 3) {
-				transform.position = new Vector3 ((int)x, 1, (int)(y+1));	
+				if (PlayerCheck ((int)(x), (int)(y+1)) == false) {
+					transform.position = new Vector3 ((int)(x), 1, (int)(y+1));	
+				}
 			}
 
 
@@ -593,39 +601,30 @@ public class PlayerControl : MonoBehaviour {
 				}
 			}
 
-			if (count_Warp == 4) {
-				//no match Player location 
-				Debug.Log("low");
-				for (int i = 0; i < mapData.ObstacleCount; i++) {
-					if (WarpX != mapData.tilexy [0].obstacle [i].x && WarpY != mapData.tilexy [0].obstacle [i].y) {
-						count_Warp++;
-					}
+		if (count_Warp == 4) {
+				
+			for (int i = 0; i < mapData.ObstacleCount; i++) {
+				if (WarpX != mapData.tilexy [0].obstacle [i].x && WarpY != mapData.tilexy [0].obstacle [i].y) {
+					for (int j = 0; i < mapData.tilexy [0].Warp.Length; i++) {
+						if (WarpX != mapData.tilexy [0].Warp [j].x && WarpY != mapData.tilexy [0].Warp [j].y) {
+							count_Warp++;
+						}
+					}	
 				}
-				Debug.Log ("Obstacle Count : " + mapData.ObstacleCount);
-				Debug.Log ("Count_warp : " + count_Warp);
 			}
+		}
+
+			Debug.Log (count_Warp);
 				
 
-			if (count_Warp ==  (mapData.ObstacleCount-4) ) {
-			//no match obstacle
-			Debug.Log("middle");
-				for (int i = 0; i < mapData.tilexy [0].Warp.Length; i++) {
+		if (count_Warp == 8) {
 
-				if (WarpX != mapData.tilexy [0].Warp [i].x && WarpY != mapData.tilexy [0].Warp [i].y) {
-					count_Warp++;
-				}
-			}
-
-		}
-
-		if (count_Warp == 4 + mapData.ObstacleCount) {
-
-			Debug.Log("high");
 			Debug.Log ("Determined : " + WarpX + " " + WarpY);
 			transform.position = new Vector3 (WarpX, 1, WarpY);
+			getCurrentLocation ();
 		}
 
-		warp = false;
+		//warp = false;
 
 			
 	}

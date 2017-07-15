@@ -468,20 +468,28 @@ public class Player2Control : MonoBehaviour {
 
 		} else if (Observer ((int)x, (int)y) == 3) {
 			//Obstacle Event
-
+			//Debug.Log("Obstacle Point");
+			//transform.position = new Vector3 ((int)lastx, 1, (int)lasty);
 			if (Observer ((int)(x-1), (int)y) != 3) {
-				transform.position = new Vector3 ((int)(x-1), 1, (int)y);	
+				if (PlayerCheck ((int)(x - 1), (int)y) == false) {
+					transform.position = new Vector3 ((int)(x-1), 1, (int)y);	
+				}
 			}
 			else if(Observer((int)(x+1),(int)y) !=3) {
-				transform.position = new Vector3 ((int)(x+1), 1, (int)y);	
+				if (PlayerCheck ((int)(x + 1), (int)y) == false) {
+					transform.position = new Vector3 ((int)(x+1), 1, (int)y);	
+				}
 			}
 			else if(Observer((int)(x),(int)(y-1)) != 3) {
-				transform.position = new Vector3 ((int)x, 1, (int)(y-1));	
+				if (PlayerCheck ((int)(x), (int)(y-1)) == false) {
+					transform.position = new Vector3 ((int)(x), 1, (int)(y-1));	
+				}
 			} 
 			else if(Observer((int)(x),(int)(y+1)) != 3) {
-				transform.position = new Vector3 ((int)x, 1, (int)(y+1));	
+				if (PlayerCheck ((int)(x), (int)(y+1)) == false) {
+					transform.position = new Vector3 ((int)(x), 1, (int)(y+1));	
+				}
 			}
-
 		}
 		else if (Observer ((int)x, (int)y) == 4) {
 			//Warp Event
@@ -575,50 +583,46 @@ public class Player2Control : MonoBehaviour {
 	}
 
 	void Warp(){
+			//Debug.Log ("Player :  " + (int)setup.playerLocation [0].x + " " + (int)setup.playerLocation [0].y); player
+			//Debug.Log("Player : " + mapData.tilexy[0].obstacle[0].x + " " + mapData.tilexy[0].obstacle[0].y); obstacle
+			//Debug.Log("Player : " + mapData.tilexy[0].Warp[0].x + " " + mapData.tilexy[0].Warp[0].y); warp 
 
-		//Debug.Log ("Player :  " + (int)setup.playerLocation [0].x + " " + (int)setup.playerLocation [0].y); player
-		//Debug.Log("Player : " + mapData.tilexy[0].obstacle[0].x + " " + mapData.tilexy[0].obstacle[0].y); obstacle
-		//Debug.Log("Player : " + mapData.tilexy[0].Warp[0].x + " " + mapData.tilexy[0].Warp[0].y); warp 
+			int WarpX = Random.Range (0, 9);
+			int WarpY = Random.Range (0, 9);
+			int count_Warp = 0;
 
-		int WarpX = Random.Range (0, 8);
-		int WarpY = Random.Range (0, 8);
-		int count_Warp = 0;
+			Debug.Log ("WARP X: " + WarpX + " " + "Warp Y: " + WarpY);
 
-		for (int i = 0; i < (int)setup.playerLocation.Length; i++) {
-			if (WarpX != (int)setup.playerLocation [i].x && WarpY != (int)setup.playerLocation [i].y) {
-				count_Warp++;
-			}
-		}
-
-		if (count_Warp == 4) {
-			//no match Player location 
-
-			for (int i = 0; i < mapData.ObstacleCount; i++) {
-				if (WarpX != mapData.tilexy [0].obstacle [i].x && WarpY != mapData.tilexy [0].obstacle [i].y) {
+			for (int i = 0; i < (int)setup.playerLocation.Length; i++) {
+				if (WarpX != (int)setup.playerLocation [i].x && WarpY != (int)setup.playerLocation [i].y) {
 					count_Warp++;
 				}
 			}
 
-		}
+			if (count_Warp == 4) {
 
-
-		if (count_Warp == 4 + (mapData.ObstacleCount - 1)) {
-			//no match obstacle
-			for (int i = 0; i < mapData.tilexy [0].Warp.Length; i++) {
-
-				if (WarpX != mapData.tilexy [0].Warp [i].x && WarpY != mapData.tilexy [0].Warp [i].y) {
-					count_Warp++;
+				for (int i = 0; i < mapData.ObstacleCount; i++) {
+					if (WarpX != mapData.tilexy [0].obstacle [i].x && WarpY != mapData.tilexy [0].obstacle [i].y) {
+						for (int j = 0; i < mapData.tilexy [0].Warp.Length; i++) {
+							if (WarpX != mapData.tilexy [0].Warp [j].x && WarpY != mapData.tilexy [0].Warp [j].y) {
+								count_Warp++;
+							}
+						}	
+					}
 				}
 			}
 
-		}
+			Debug.Log (count_Warp);
 
-		if (count_Warp == 8 + (mapData.ObstacleCount - 1)) {
-			Debug.Log ("Determined : " + WarpX + " " + WarpY);
-			transform.position = new Vector3 (WarpX, 1, WarpY);
-		}
 
-		warp = false;
+			if (count_Warp == 8) {
+
+				Debug.Log ("Determined : " + WarpX + " " + WarpY);
+				transform.position = new Vector3 (WarpX, 1, WarpY);
+				getCurrentLocation ();
+			}
+
+			//warp = false;
 
 	}
 

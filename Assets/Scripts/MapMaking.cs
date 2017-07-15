@@ -24,18 +24,19 @@ public class MapMaking : MonoBehaviour {
 	private int [] Player4_ObstacleCount;
 
     private bool reset = false;
+	private bool shuffle = true;
 
 	private int P1_ObstacleCount = 0; //Player's Obstacle Count 
 	private int P2_ObstacleCount = 0;
 	private int P3_ObstacleCount = 0;
 	private int P4_ObstacleCount = 0;
 
-
 	void Start () {
 
 		ObstacleCount = 4; //total counting 
 		GenerateMapData (ObstacleCount);
 		GenerateMapVisual();
+
 
 		Player1_ObstacleCount = new int[7];
 		Player2_ObstacleCount = new int[7];
@@ -49,6 +50,8 @@ public class MapMaking : MonoBehaviour {
 		MakeShuffle (Player4_ObstacleCount);
 
 	}
+
+
 
 	void GenerateMapData(int size){
 		loadObstacle (); //load Obstacle Data	
@@ -88,6 +91,11 @@ public class MapMaking : MonoBehaviour {
         //Debug.Log("Obstacle : " + ObstacleCount);
        // Debug.Log(reset);
 
+		if (shuffle) {
+			setRandomObstacle ();
+			shuffle = false;
+		}
+
         if (CountUp) {
 
             if(reset == false)
@@ -115,7 +123,6 @@ public class MapMaking : MonoBehaviour {
 
 	void loadObstacle(){
 		tilexy = GameObject.Find("GameObject").GetComponents<tileXY>();
-
 	}
 
 	public int getTileData(int x,int y){
@@ -124,20 +131,38 @@ public class MapMaking : MonoBehaviour {
 	}            
 
 
+	void setRandomObstacle(){
+
+		for (int i = 4; i < tilexy [0].obstacle.Length; i++) {
+			int a = Random.Range (0, 4);
+
+			tilexy [0].obstacle [i].z = (int)a;
+		}
+
+	}
 
 	void GenerateMapVisual(){
+
 		for (int x = 0; x < mapSize; x++) {
 			for (int y = 0; y < mapSize; y++) {
 				TileType tile = tiletypes [tiles [x, y]]; //when obstacle random 
 				GameObject go;
 
 				if (tiles [x, y] == 3) {
-					
-					int a = Random.Range (0, 4);
 
-				//	Debug.Log (a);
+					int type = 0;
 
-					go = (GameObject)Instantiate (obstacletypes[a].ObstaclePrefab, new Vector3 (x, 0, y), Quaternion.identity);
+					for (int i = 4; i < tilexy [0].obstacle.Length; i++) {
+						if ((int)tilexy [0].obstacle [i].x == (int)x && (int)tilexy [0].obstacle [i].y == (int)y) {
+							type = (int)tilexy [0].obstacle [i].z;
+							Debug.Log ("Type : " + type);
+						}
+					}
+				
+
+
+					go = (GameObject)Instantiate (obstacletypes[type].ObstaclePrefab, new Vector3 (x, 0, y), Quaternion.identity);
+
 
 				} else {
 					 go = (GameObject)Instantiate (tile.tileViualPrefab, new Vector3 (x, 0, y), Quaternion.identity);
