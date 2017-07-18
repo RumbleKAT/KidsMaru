@@ -1,15 +1,11 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MapMaking.cs">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Assets/Scripts/PlayerControl.cs" Line="589" Column="55" />
-      <File FileName="Assets/Scripts/MapMaking.cs" Line="155" Column="20" />
-      <File FileName="Assets/Scripts/Player2Control.cs" Line="470" Column="1" />
-      <File FileName="Assets/GameSetup.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/ClickableTile.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Player3Control.cs" Line="489" Column="5" />
-      <File FileName="Assets/Scripts/Player4Control.cs" Line="466" Column="47" />
-      <File FileName="Assets/Scripts/tileXY.cs" Line="7" Column="41" />
+      <File FileName="Assets/Scripts/MapMaking.cs" Line="172" Column="3" />
+      <File FileName="Assets/GameSetup.cs" Line="15" Column="32" />
+      <File FileName="Assets/Scripts/tileXY.cs" Line="9" Column="28" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="34" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

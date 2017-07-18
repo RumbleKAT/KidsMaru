@@ -6,7 +6,7 @@ public class tileXY : MonoBehaviour {
 
 	public Vector3[] obstacle = new Vector3[10]; //total count of x,y location
 
-	public int [] obstacleType = new int[35]; //obstacle type store
+	public Vector3 [] RoadType = new Vector3[76]; //obstacle type store
 
 	public Vector2[] Player1Obstacle = new Vector2[7];
 	public Vector2[] Player2Obstacle = new Vector2[7];

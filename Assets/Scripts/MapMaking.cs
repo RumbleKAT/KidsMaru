@@ -5,7 +5,10 @@ using UnityEngine;
 public class MapMaking : MonoBehaviour {
 
 	public TileType [] tiletypes;
+
 	public ObstacleType[] obstacletypes;
+	public RoadType[] roadtypes;
+
 	public int[,] tiles;
 	public tileXY [] tilexy;
 	public int ObstacleCount;
@@ -32,8 +35,9 @@ public class MapMaking : MonoBehaviour {
 	private int P4_ObstacleCount = 0;
 
 	void Start () {
-
-		ObstacleCount = 4; //total counting 
+		
+		ObstacleCount = 4; //total counting
+		//setRandomRoad ();
 		GenerateMapData (ObstacleCount);
 		GenerateMapVisual();
 
@@ -50,7 +54,6 @@ public class MapMaking : MonoBehaviour {
 		MakeShuffle (Player4_ObstacleCount);
 
 	}
-
 
 
 	void GenerateMapData(int size){
@@ -88,10 +91,8 @@ public class MapMaking : MonoBehaviour {
 
 	void Update(){
 
-        //Debug.Log("Obstacle : " + ObstacleCount);
-       // Debug.Log(reset);
-
 		if (shuffle) {
+			//setRandomRoad (); //once 
 			setRandomObstacle ();
 			shuffle = false;
 		}
@@ -141,6 +142,18 @@ public class MapMaking : MonoBehaviour {
 
 	}
 
+	void setRandomRoad(){
+
+		for (int i = 4; i < tilexy [0].RoadType.Length; i++) {
+			int a = Random.Range (0, 7); //
+
+			Debug.Log (a);
+		}
+
+	}
+
+
+
 	void GenerateMapVisual(){
 
 		for (int x = 0; x < mapSize; x++) {
@@ -148,7 +161,23 @@ public class MapMaking : MonoBehaviour {
 				TileType tile = tiletypes [tiles [x, y]]; //when obstacle random 
 				GameObject go;
 
-				if (tiles [x, y] == 3) {
+
+				if (tiles [x, y] == 1) {
+
+					int type = 0;
+
+					for (int i = 4; i < tilexy [0].RoadType.Length; i++) {
+						if ((int)tilexy [0].RoadType [i].x == (int)x && (int)tilexy [0].RoadType [i].y == (int)y) {
+							type = (int)tilexy [0].RoadType [i].z;
+//							Debug.Log ("Type : " + type);
+						}
+					}
+						
+					go = (GameObject)Instantiate (roadtypes[type].RoadPrefab, new Vector3 (x, 0, y), Quaternion.identity);
+
+
+				}
+				 else if (tiles [x, y] == 3) {
 
 					int type = 0;
 
@@ -167,6 +196,8 @@ public class MapMaking : MonoBehaviour {
 				} else {
 					 go = (GameObject)Instantiate (tile.tileViualPrefab, new Vector3 (x, 0, y), Quaternion.identity);
 				}
+
+
 				ct = go.GetComponent<ClickableTile> ();
 				ct.tileX = x;
 				ct.tileY = y;

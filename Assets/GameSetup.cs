@@ -15,6 +15,8 @@ public class GameSetup : MonoBehaviour {
 	private TileType [] tiletypes;
 	private tileXY [] tilexy;
 
+
+
 	public Vector2 [] playerLocation;
 
 	// Use this for initialization

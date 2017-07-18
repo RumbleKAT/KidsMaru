@@ -12,17 +12,19 @@ public class PlayerControl : MonoBehaviour {
 	public int run = 0;
 	public int tileType;
 
-	bool up = false;
-	bool down = false;
-	bool left = false;
-	bool right = false;
-	bool locationCheck = true;
+	public bool up = false;
+	public bool down = false;
+	public bool left = false;
+	public bool right = false;
+	public bool locationCheck = true;
 	bool endCheck = false;
 	bool goHome = false; 
 	bool warp = false;
     public bool crashing = false;
     bool action = false;
-	bool reset = false;
+	public bool reset = false;
+	public bool ManagerMove = false; 
+
 
     private float x; //location
 	private float y; 
@@ -127,6 +129,7 @@ public class PlayerControl : MonoBehaviour {
 					up = false; // play once 
 					locationCheck = true;
                     action = false;
+					ManagerMove = true; 
 
                 } else {
 					run = 1;
@@ -136,6 +139,8 @@ public class PlayerControl : MonoBehaviour {
 
 			
 			}
+
+			ManagerMove = true; 
 				
 		} else if (down) {
 
@@ -199,6 +204,7 @@ public class PlayerControl : MonoBehaviour {
 					down = false; // play once 
                     action = false;
 					locationCheck = true;
+					ManagerMove = true; 
 
                 }
                 else {
@@ -207,6 +213,7 @@ public class PlayerControl : MonoBehaviour {
 				transform.Translate (Vector3.back * Time.deltaTime * speed * run);
 			
 			}
+
 				
 
 		} else if (left) {
@@ -274,7 +281,7 @@ public class PlayerControl : MonoBehaviour {
 					run = 0;
 					left = false;
                     action = false;
-
+					ManagerMove = true; 
 
                 }
                 else {
@@ -282,6 +289,9 @@ public class PlayerControl : MonoBehaviour {
 				}
 				transform.Translate (Vector3.left * Time.deltaTime * speed * run);
 			}
+
+
+
 				
 		
 		} else if (right) {
@@ -349,13 +359,15 @@ public class PlayerControl : MonoBehaviour {
 					run = 0;
 					right = false;
                     action = false;
+					ManagerMove = true; 
 
                 }
                 else {
 					run = 1;
 				}
 				transform.Translate (Vector3.right * Time.deltaTime * speed * run);
-			} 
+			}
+				
 		}
 
 		else {
@@ -386,7 +398,7 @@ public class PlayerControl : MonoBehaviour {
 			
 	}
 
-	void getCurrentLocation(){
+	public void getCurrentLocation(){
 		
 		x = (int)Mathf.Round(Player.gameObject.transform.position.x);
 		y = (int)Mathf.Round(Player.gameObject.transform.position.z); 
